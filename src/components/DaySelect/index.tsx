@@ -16,6 +16,9 @@ const DaySelect = ({
   return (
     <section aria-label="Choose day">
       <select
+        style={{
+          padding: '0.5rem',
+        }}
         name="wordSelect"
         id="wordSelect"
         value={selectedDay}

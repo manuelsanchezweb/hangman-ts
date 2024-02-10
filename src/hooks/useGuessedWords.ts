@@ -8,10 +8,13 @@ export const useGuessedWords = () => {
   }
 
   const markWordAsGuessed = (day: string) => {
+    if (!day.trim()) return // Prevent marking if day is empty or invalid
     const guessedWords = getGuessedWords()
     guessedWords[day] = true
     localStorage.setItem('guessedWords', JSON.stringify(guessedWords))
   }
 
-  return { isWordGuessed, markWordAsGuessed }
+  const guessWordsCount = Object.keys(getGuessedWords()).length
+
+  return { isWordGuessed, markWordAsGuessed, guessWordsCount }
 }

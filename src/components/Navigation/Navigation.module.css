@@ -1,0 +1,14 @@
+.nav {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  align-items: center;
+  padding: 1rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid black;
+  z-index: 1;
+  background-color: white;
+  gap: 20px;
+}

@@ -1,69 +1,219 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import './App.css'
 import { HangmanDrawing } from './components/HangmanDrawing'
 import { WORD_PER_DAY } from './data'
 import { useSelectedWordPerDay } from './hooks/useSelectedWordPerDay'
 import { useGuessedWords } from './hooks/useGuessedWords'
-import DaySelect from './components/DaySelect'
+import { HangmanWord } from './components/HangmanWord'
+import { Keyboard } from './components/Keyboard/Keyboard'
+import { useGuessedLetters } from './hooks/useGuessedLetters'
+import Navigation from './components/Navigation'
 
+/**
+ * The main Hangman game component.
+ */
 function App() {
   const { selectedDay, setSelectedDay, wordToGuess, setWordToGuess } =
     useSelectedWordPerDay()
-  const { isWordGuessed, markWordAsGuessed } = useGuessedWords()
-  const [guessedWordsUpdate, setGuessedWordsUpdate] = useState(0)
-  // const [guessedLetters, setGuessedLetters] = useState<string[]>([])
+  const { isWordGuessed, markWordAsGuessed, guessWordsCount } =
+    useGuessedWords()
+  const [_guessedWordsUpdate, setGuessedWordsUpdate] = useState(0)
+  const { guessedLetters, addGuessedLetter, resetGuessedLetters } =
+    useGuessedLetters()
 
-  // const incorrectLetters = guessedLetters.filter(
-  //   (letter) => !wordToGuess.includes(letter)
-  // )
+  /**
+   * Filters out incorrect guessed letters.
+   */
+  const incorrectLetters = guessedLetters.filter(
+    (letter) => !wordToGuess.includes(letter)
+  )
+
+  /**
+   * Marks the current selected word as guessed and triggers an update.
+   */
+  const handleGuess = useCallback(() => {
+    markWordAsGuessed(selectedDay)
+    setGuessedWordsUpdate((prev) => prev + 1)
+  }, [selectedDay])
+
+  /**
+   * Determines if the player has lost the game.
+   */
+  const isLoser = incorrectLetters.length >= 6
+
+  /**
+   * Determines if the player has won the game.
+   */
+  const isWinner = wordToGuess
+    .split('')
+    .every((letter) => guessedLetters.includes(letter))
 
   useEffect(() => {
-    const today = new Date().toISOString().split('T')[0]
-    const validEntries = WORD_PER_DAY.filter((entry) => entry.day <= today)
-    const mostRecentEntry = validEntries[validEntries.length - 1]
-    if (mostRecentEntry) {
-      setSelectedDay(mostRecentEntry.day)
-      setWordToGuess(mostRecentEntry.word)
+    const handler = (e: KeyboardEvent) => {
+      const key = e.key.toLowerCase()
+      if (key.match(/^[a-z]$/) && !isWinner && !isLoser) {
+        e.preventDefault()
+        addGuessedLetter(key)
+      }
+    }
+
+    window.addEventListener('keypress', handler)
+    return () => window.removeEventListener('keypress', handler)
+  }, [addGuessedLetter, isWinner, isLoser])
+
+  useEffect(() => {
+    if (isWinner) {
+      handleGuess()
+    }
+  }, [isWinner])
+
+  useEffect(() => {
+    const initializeGame = () => {
+      // Adjust to prioritize the last visited day or default to the most recent valid entry
+      const savedDay = localStorage.getItem('lastVisitedDay')
+      let dayToSet = savedDay
+      let wordToSet
+
+      if (savedDay) {
+        const savedEntry = WORD_PER_DAY.find((entry) => entry.day === savedDay)
+        if (savedEntry) {
+          wordToSet = savedEntry.word
+        } else {
+          // Fallback if the saved day is no longer valid
+          const today = new Date().toISOString().split('T')[0]
+          const validEntries = WORD_PER_DAY.filter(
+            (entry) => entry.day <= today
+          )
+          const mostRecentEntry = validEntries[validEntries.length - 1]
+          dayToSet = mostRecentEntry.day
+          wordToSet = mostRecentEntry.word
+        }
+      } else {
+        // Initial case if no day is saved, similar fallback as above
+        const today = new Date().toISOString().split('T')[0]
+        const validEntries = WORD_PER_DAY.filter((entry) => entry.day <= today)
+        const mostRecentEntry = validEntries[validEntries.length - 1]
+        dayToSet = mostRecentEntry.day
+        wordToSet = mostRecentEntry.word
+      }
+
+      setSelectedDay(dayToSet as string)
+      setWordToGuess(wordToSet)
+    }
+    initializeGame()
+  }, [])
+
+  useEffect(() => {
+    // Load the last visited day from localStorage
+    const lastVisitedDay = localStorage.getItem('lastVisitedDay')
+    if (lastVisitedDay) {
+      setSelectedDay(lastVisitedDay)
+      const selectedWordEntry = WORD_PER_DAY.find(
+        (entry) => entry.day === lastVisitedDay
+      )
+      if (selectedWordEntry) {
+        setWordToGuess(selectedWordEntry.word)
+      }
     }
   }, [])
 
+  /**
+   * Changes the selected day and updates the word to guess accordingly.
+   * Resets guessed letters for the new word.
+   */
   const handleDayChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedDate = event.target.value
+    localStorage.setItem('lastVisitedDay', selectedDate) // Save the last visited day
     const selectedWordEntry = WORD_PER_DAY.find(
       (entry) => entry.day === selectedDate
     )
     if (selectedWordEntry) {
       setSelectedDay(selectedWordEntry.day)
       setWordToGuess(selectedWordEntry.word)
+      resetGuessedLetters() // Reset guessed letters for the new word
+      // Reset guessed letters for the new word
     }
   }
 
-  const handleGuess = () => {
-    markWordAsGuessed(selectedDay)
-    setGuessedWordsUpdate(guessedWordsUpdate + 1)
-  }
-
   return (
-    <div
-      style={{
-        maxWidth: '800px',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '2rem',
-        margin: '0 auto',
-        alignItems: 'center',
-      }}
-    >
-      <h1>Hangman</h1>
-      <DaySelect
+    <>
+      <Navigation
         selectedDay={selectedDay}
         handleDayChange={handleDayChange}
         isWordGuessed={isWordGuessed}
+        guessWordsCount={guessWordsCount}
       />
-      <HangmanDrawing numberOfGuesses={8} />
-      <p>Selected word: {wordToGuess}</p>
-      <button onClick={handleGuess}>Guess</button>
-    </div>
+
+      <div
+        style={{
+          maxWidth: '800px',
+          display: 'flex',
+          flexDirection: 'column',
+          margin: '0 auto',
+          alignItems: 'center',
+        }}
+      >
+        {isWordGuessed(selectedDay) ? (
+          <p
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+            }}
+          >
+            You already discovered the word of the day:{' '}
+            <strong>{wordToGuess}</strong>
+          </p>
+        ) : (
+          <>
+            <HangmanDrawing numberOfGuesses={incorrectLetters.length} />
+            <HangmanWord
+              guessedLetters={guessedLetters}
+              wordToGuess={wordToGuess}
+            />
+            <div style={{ alignSelf: 'stretch' }}>
+              <Keyboard
+                disabled={isWinner || isLoser}
+                activeLetters={guessedLetters.filter((letter) =>
+                  wordToGuess.includes(letter)
+                )}
+                inactiveLetters={incorrectLetters}
+                addGuessedLetter={addGuessedLetter}
+              />
+            </div>
+          </>
+        )}
+
+        <div className="game-status">
+          {isWinner && 'Winner! - Try any other day to play again'}
+          {isLoser && (
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '1rem',
+              }}
+            >
+              <p>Nice Try - Maybe next time!</p>
+              <button
+                style={{
+                  border: '1px solid black',
+                  padding: '0.5rem',
+                  cursor: 'pointer',
+                }}
+                onClick={() => {
+                  // refresh the page to start a new game
+                  window.location.reload()
+                }}
+              >
+                Try again
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </>
   )
 }
 

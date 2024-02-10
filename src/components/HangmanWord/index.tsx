@@ -14,14 +14,14 @@ export function HangmanWord({
       style={{
         display: 'flex',
         gap: '.25em',
-        fontSize: '6rem',
+        fontSize: '2rem',
         fontWeight: 'bold',
         textTransform: 'uppercase',
-        fontFamily: 'monospace',
+        marginBottom: '30px',
       }}
     >
       {wordToGuess.split('').map((letter, index) => (
-        <span style={{ borderBottom: '.1em solid black' }} key={index}>
+        <span style={{ borderBottom: '3px solid black' }} key={index}>
           <span
             style={{
               visibility:

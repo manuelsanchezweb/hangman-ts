@@ -1,13 +1,15 @@
+const scale = 0.6 // Define a scaling factor
+
 const HEAD = (
   <div
     style={{
-      width: '50px',
-      height: '50px',
+      width: `${50 * scale}px`, // Scale width
+      height: `${50 * scale}px`, // Scale height
       borderRadius: '100%',
-      border: '10px solid black',
+      border: `3px solid black`, // Scale border width
       position: 'absolute',
-      top: '50px',
-      right: '-30px',
+      top: `${55 * scale}px`, // Scale position
+      right: `${-30 * scale}px`, // Scale position
     }}
   />
 )
@@ -15,11 +17,11 @@ const HEAD = (
 const BODY = (
   <div
     style={{
-      width: '10px',
-      height: '100px',
+      width: `3px`, // Scale width
+      height: `${100 * scale}px`, // Scale height
       background: 'black',
       position: 'absolute',
-      top: '120px',
+      top: `${110 * scale}px`, // Scale position
       right: 0,
     }}
   />
@@ -28,12 +30,12 @@ const BODY = (
 const RIGHT_ARM = (
   <div
     style={{
-      width: '100px',
-      height: '10px',
+      width: `${100 * scale}px`, // Scale width
+      height: `3px`, // Scale height
       background: 'black',
       position: 'absolute',
-      top: '150px',
-      right: '-100px',
+      top: `${150 * scale}px`, // Scale position
+      right: `${-100 * scale}px`, // Scale position
       rotate: '-30deg',
       transformOrigin: 'left bottom',
     }}
@@ -43,12 +45,12 @@ const RIGHT_ARM = (
 const LEFT_ARM = (
   <div
     style={{
-      width: '100px',
-      height: '10px',
+      width: `${100 * scale}px`, // Scale width
+      height: `3px`, // Scale height
       background: 'black',
       position: 'absolute',
-      top: '150px',
-      right: '10px',
+      top: `${150 * scale}px`, // Scale position
+      right: `${7 * scale}px`, // Adjust position according to scale
       rotate: '30deg',
       transformOrigin: 'right bottom',
     }}
@@ -58,12 +60,12 @@ const LEFT_ARM = (
 const RIGHT_LEG = (
   <div
     style={{
-      width: '100px',
-      height: '10px',
+      width: `${100 * scale}px`, // Scale width
+      height: `3px`, // Scale height
       background: 'black',
       position: 'absolute',
-      top: '210px',
-      right: '-90px',
+      top: `${200 * scale}px`, // Scale position
+      right: `${-95 * scale}px`, // Scale position
       rotate: '60deg',
       transformOrigin: 'left bottom',
     }}
@@ -73,11 +75,11 @@ const RIGHT_LEG = (
 const LEFT_LEG = (
   <div
     style={{
-      width: '100px',
-      height: '10px',
+      width: `${100 * scale}px`, // Scale width
+      height: `3px`, // Scale height
       background: 'black',
       position: 'absolute',
-      top: '210px',
+      top: `${200 * scale}px`, // Scale position
       right: 0,
       rotate: '-60deg',
       transformOrigin: 'right bottom',
@@ -93,12 +95,12 @@ type HangmanDrawingProps = {
 
 export function HangmanDrawing({ numberOfGuesses }: HangmanDrawingProps) {
   return (
-    <div style={{ position: 'relative' }}>
+    <div style={{ marginTop: '8rem', position: 'relative', scale: '0.75' }}>
       {BODY_PARTS.slice(0, numberOfGuesses)}
       <div
         style={{
-          height: '50px',
-          width: '10px',
+          height: '35px',
+          width: '3px',
           background: 'black',
           position: 'absolute',
           top: 0,
@@ -107,21 +109,21 @@ export function HangmanDrawing({ numberOfGuesses }: HangmanDrawingProps) {
       />
       <div
         style={{
-          height: '10px',
-          width: '200px',
+          height: '3px',
+          width: '210px',
           background: 'black',
-          marginLeft: '120px',
+          marginLeft: '40px',
         }}
       />
       <div
         style={{
-          height: '400px',
-          width: '10px',
+          height: '250px',
+          width: '3px',
           background: 'black',
           marginLeft: '120px',
         }}
       />
-      <div style={{ height: '10px', width: '250px', background: 'black' }} />
+      <div style={{ height: '3px', width: '250px', background: 'black' }} />
     </div>
   )
 }
