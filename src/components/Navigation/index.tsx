@@ -7,13 +7,17 @@ const Navigation = ({
   selectedDay,
   handleDayChange,
   isWordGuessed,
-  guessWordsCount,
+  guessedWordsCount,
 }: {
   selectedDay: string
   handleDayChange: (event: React.ChangeEvent<HTMLSelectElement>) => void
   isWordGuessed: (day: string) => boolean
-  guessWordsCount: number
+  guessedWordsCount: () => number
 }) => {
+  const totalOfWordsUpToToday = WORD_PER_DAY.filter(
+    (entry) => entry.day <= new Date().toISOString().split('T')[0]
+  ).length
+
   return (
     <nav className={styles.nav}>
       <DaySelect
@@ -30,7 +34,7 @@ const Navigation = ({
         <span>Nº. of words guessed: </span>
         <span>
           <strong>
-            {guessWordsCount} / {WORD_PER_DAY.length}
+            {guessedWordsCount()} / {totalOfWordsUpToToday}
           </strong>
         </span>
       </div>

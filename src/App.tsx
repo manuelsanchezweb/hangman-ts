@@ -15,7 +15,7 @@ import Navigation from './components/Navigation'
 function App() {
   const { selectedDay, setSelectedDay, wordToGuess, setWordToGuess } =
     useSelectedWordPerDay()
-  const { isWordGuessed, markWordAsGuessed, guessWordsCount } =
+  const { isWordGuessed, markWordAsGuessed, guessedWordsCount } =
     useGuessedWords()
   const [_guessedWordsUpdate, setGuessedWordsUpdate] = useState(0)
   const { guessedLetters, addGuessedLetter, resetGuessedLetters } =
@@ -141,7 +141,7 @@ function App() {
         selectedDay={selectedDay}
         handleDayChange={handleDayChange}
         isWordGuessed={isWordGuessed}
-        guessWordsCount={guessWordsCount}
+        guessedWordsCount={guessedWordsCount}
       />
 
       <div

@@ -14,7 +14,13 @@ export const useGuessedWords = () => {
     localStorage.setItem('guessedWords', JSON.stringify(guessedWords))
   }
 
-  const guessWordsCount = Object.keys(getGuessedWords()).length
+  const guessedWordsCount = () => {
+    const today = new Date().toISOString().split('T')[0]
+    const guessedWords = getGuessedWords()
+    return Object.keys(guessedWords).filter(
+      (day) => day <= today && guessedWords[day]
+    ).length
+  }
 
-  return { isWordGuessed, markWordAsGuessed, guessWordsCount }
+  return { isWordGuessed, markWordAsGuessed, guessedWordsCount }
 }
