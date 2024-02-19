@@ -62,4 +62,56 @@ export const WORD_PER_DAY: WordEntry[] = [
     word: 'mirror',
     day: '2024-02-17',
   },
+  {
+    word: 'able',
+    day: '2024-02-18',
+  },
+  {
+    word: 'reliable',
+    day: '2024-02-19',
+  },
+  {
+    word: 'sunshine',
+    day: '2024-02-20',
+  },
+  {
+    word: 'daylight',
+    day: '2024-02-21',
+  },
+  {
+    word: 'scary',
+    day: '2024-02-22',
+  },
+  {
+    word: 'movie',
+    day: '2024-02-23',
+  },
+  {
+    word: 'pineapple',
+    day: '2024-02-24',
+  },
+  {
+    word: 'fearless',
+    day: '2024-02-25',
+  },
+  {
+    word: 'balloon',
+    day: '2024-02-26',
+  },
+  {
+    word: 'courage',
+    day: '2024-02-27',
+  },
+  {
+    word: 'festival',
+    day: '2024-02-28',
+  },
+  {
+    word: 'exception',
+    day: '2024-02-29',
+  },
+  {
+    word: 'march',
+    day: '2024-03-01',
+  },
 ]
