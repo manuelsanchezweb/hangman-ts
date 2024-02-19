@@ -2,6 +2,7 @@ import styles from './Navigation.module.css'
 import React from 'react'
 import { WORD_PER_DAY } from '../../data'
 import DaySelect from '../DaySelect'
+import User from '../User/User'
 
 const Navigation = ({
   selectedDay,
@@ -20,23 +21,33 @@ const Navigation = ({
 
   return (
     <nav className={styles.nav}>
-      <DaySelect
-        selectedDay={selectedDay}
-        handleDayChange={handleDayChange}
-        isWordGuessed={isWordGuessed}
-      />
-      <div
-        style={{
-          display: 'flex',
-          gap: '10px',
-        }}
-      >
-        <span>Nº. of words guessed: </span>
-        <span>
-          <strong>
+      <User guessedWordsCount={guessedWordsCount} />
+
+      <div className={styles.nav__right}>
+        <DaySelect
+          selectedDay={selectedDay}
+          handleDayChange={handleDayChange}
+          isWordGuessed={isWordGuessed}
+        />
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '10px',
+            marginRight: '30px',
+          }}
+        >
+          <div
+            style={{
+              fontWeight: 'bold',
+            }}
+          >
+            Nº. of words guessed:{' '}
+          </div>
+          <div>
             {guessedWordsCount()} / {totalOfWordsUpToToday}
-          </strong>
-        </span>
+          </div>
+        </div>
       </div>
     </nav>
   )

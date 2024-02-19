@@ -2,6 +2,7 @@ const scale = 0.6 // Define a scaling factor
 
 const HEAD = (
   <div
+    key="head"
     style={{
       width: `${50 * scale}px`, // Scale width
       height: `${50 * scale}px`, // Scale height
@@ -16,6 +17,7 @@ const HEAD = (
 
 const BODY = (
   <div
+    key="body"
     style={{
       width: `3px`, // Scale width
       height: `${100 * scale}px`, // Scale height
@@ -29,6 +31,7 @@ const BODY = (
 
 const RIGHT_ARM = (
   <div
+    key="rightArm"
     style={{
       width: `${100 * scale}px`, // Scale width
       height: `3px`, // Scale height
@@ -44,6 +47,7 @@ const RIGHT_ARM = (
 
 const LEFT_ARM = (
   <div
+    key="leftArm"
     style={{
       width: `${100 * scale}px`, // Scale width
       height: `3px`, // Scale height
@@ -59,6 +63,7 @@ const LEFT_ARM = (
 
 const RIGHT_LEG = (
   <div
+    key="rightLeg"
     style={{
       width: `${100 * scale}px`, // Scale width
       height: `3px`, // Scale height
@@ -74,6 +79,7 @@ const RIGHT_LEG = (
 
 const LEFT_LEG = (
   <div
+    key="leftLeg"
     style={{
       width: `${100 * scale}px`, // Scale width
       height: `3px`, // Scale height
@@ -95,7 +101,7 @@ type HangmanDrawingProps = {
 
 export function HangmanDrawing({ numberOfGuesses }: HangmanDrawingProps) {
   return (
-    <div style={{ marginTop: '8rem', position: 'relative', scale: '0.75' }}>
+    <div style={{ marginTop: '3rem', position: 'relative', scale: '0.75' }}>
       {BODY_PARTS.slice(0, numberOfGuesses)}
       <div
         style={{

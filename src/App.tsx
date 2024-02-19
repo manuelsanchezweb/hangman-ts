@@ -8,6 +8,7 @@ import { HangmanWord } from './components/HangmanWord'
 import { Keyboard } from './components/Keyboard/Keyboard'
 import { useGuessedLetters } from './hooks/useGuessedLetters'
 import Navigation from './components/Navigation'
+import confetti from 'canvas-confetti'
 
 /**
  * The main Hangman game component.
@@ -34,6 +35,7 @@ function App() {
   const handleGuess = useCallback(() => {
     markWordAsGuessed(selectedDay)
     setGuessedWordsUpdate((prev) => prev + 1)
+    confetti()
   }, [selectedDay])
 
   /**
@@ -50,6 +52,16 @@ function App() {
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
+      // Check if the target of the keypress event is an input, textarea, or select
+      const target = e.target as HTMLElement
+      if (
+        target.tagName === 'INPUT' ||
+        target.tagName === 'TEXTAREA' ||
+        target.tagName === 'SELECT'
+      ) {
+        return // Ignore the keypress event
+      }
+
       const key = e.key.toLowerCase()
       if (key.match(/^[a-z]$/) && !isWinner && !isLoser) {
         e.preventDefault()
@@ -151,15 +163,14 @@ function App() {
           flexDirection: 'column',
           margin: '0 auto',
           alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '100vh',
         }}
       >
         {isWordGuessed(selectedDay) ? (
           <p
             style={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
+              marginBottom: '1rem',
             }}
           >
             You already discovered the word of the day:{' '}
