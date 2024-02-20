@@ -28,3 +28,13 @@ I want to start diving in the topic of gamification and want to start simple. Th
 - 🚀 Logic created with TypeScript & React Hooks
 - 🗓️ A new word per day will be available to be played. You will not be able to play days beyond today, but of course you can try to get all the words of previous days
 - 🎮 It is a game. Simple. No data gathering. That is why the information is stored in your computer in the LocalStorage
+
+## Future ToDos
+
+- [ ] Add other avatars
+- [ ] Add level up UI and logic
+- [ ] Add daily bonus UI
+- [ ] Add daily bonus logic
+- [ ] Add mini shop system to buy a hint for the current word of the day
+- [ ] Add some achievement ui overlay
+- [ ] Add first achievemnets (guess your first word, guess 5 words)
