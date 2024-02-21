@@ -8,7 +8,7 @@ import { HangmanWord } from './components/HangmanWord'
 import { Keyboard } from './components/Keyboard/Keyboard'
 import { useGuessedLetters } from './hooks/useGuessedLetters'
 import Navigation from './components/Navigation'
-import confetti from 'canvas-confetti'
+// import confetti from 'canvas-confetti'
 
 /**
  * The main Hangman game component.
@@ -35,7 +35,7 @@ function App() {
   const handleGuess = useCallback(() => {
     markWordAsGuessed(selectedDay)
     setGuessedWordsUpdate((prev) => prev + 1)
-    confetti()
+    // confetti()
   }, [selectedDay])
 
   /**
